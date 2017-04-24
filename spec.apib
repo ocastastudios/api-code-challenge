@@ -1,0 +1,230 @@
+FORMAT: 1A
+
+# Ocasta API Code Challenge
+
+Our coding challenge is your opportunity to demonstrate your experience, skills, and aptitude by building a prototype for a room monitoring system.
+We hope that this project will not take too much of your time. If there are things you are unfamiliar with we would like to think these will be useful to you in the future. If you have any questions please do not hesitate to [contact us](mailto:martin@ocasta.com).
+
+## Background
+
+We are adding a feature to Oplift to see if a meeting room is in use. Any member of staff will be able to view the status of any room at any time through our Oplift apps and web interface. In addition we will allow administrators to add new rooms. An API server will provide the functionality for the web page and app.
+
+## API spec
+
+All API calls made require a Basic Authentication header which should be checked against a list of users. You can use a pre-canned list of users and administrators, you do not need to provide any means for administering these.
+
+- All API requests will be made using HTTP or HTTPS
+- All responses will return appropriate HTTP Response codes and a JSON body.
+
+Each room has:
+
+- An unique ID
+- A Name (max 50 characters)
+- A state. Available true or false
+
+You can see the specification of the API below. Note that some requests can only be made by administrators. 
+
+## Your Task
+
+Build the API server that can support the API described below.
+
+You do not have to build a functional UI unless you want to show off your talents across the stack. We will test your API by using it. You are encouraged to write tests to verify your own results.
+
+Then send us a link to your repo. If it's a private github repo, please add martin@ocasta.com as an admin
+
+In your repo, please include the following items in your README:
+
+-   Description of the problem and solution.
+-   Reasoning behind your technical choices, including architectural.
+-   Trade-offs you might have made, anything you left out, or what you might do differently if you were to spend additional time on the project.
+-   Link to to the hosted application where applicable.
+
+This will give us insight into how you approached the challenge.
+
+
+**Optional**
+
+A containerized solution is not a requirement but is definitely preferred as it is easier to deploy and test your solution. Therefore adding a `Dockerfile` to your solution is optional, but recommended.
+
+Ideally, your API would be deployed to a public location (heroku, AWS, your choice) for us to test against.
+
+
+**Show us your other projects! (optional)**
+
+If you have existing code that you would like to share, please follow these guidelines:
+
+-   Include a link to the repository in the README file that is part of your coding challenge submission
+-   A description of what the code does
+-   If the repository has multiple contributors, please call out the parts that you were responsible for
+
+
+## Questions
+
+**What application servers and frameworks can I use?**
+
+That's entirely up to you. We ask that you explain the choices you've made. Please pick something you're familiar with, as you'll need to be able to discuss it. We use Wordpress and HapiJS.
+
+**What database should I use?**
+
+MySQL, PostgreSQL or Mongo. We use MySQL and Mongo in-house.
+
+**What will you be grading me on?**
+
+Elegance, robustness, understanding of the technologies you use, tests, security. 
+
+**Will I have a chance to explain my choices?**
+
+Feel free to comment your code, or put explanations in a pull request within the repo. If we proceed weâ€™ll be asking questions about why you made the choices you made. 
+
+**Why doesn't the test include X?**
+
+Good question. Feel free to tell us how to make the test better. Or, you know, fork it and improve it!
+
+
+# Group Room
+
+## Rooms [/room/{id}]
+
+### Get All Rooms [GET]
+
++ Request
+
+    + Headers
+        
+            Authorization: Basic xxx
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [
+                {
+                    "id": "abc123",
+                    "name": "Meeting Room 1",
+                    "available": true
+                }
+            ]
+
+### Get Single Room [GET]
+
++ Parameters
+
+    + id: abc123 (required, string) - The id of the room to return
+
++ Request
+    
+    + Headers
+
+            Authorization: Basic xxx
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "id": "abc123",
+                "name": "Meeting Room 1",
+                "available": true
+            }
+
+
+### Set Availability State [PUT]
+
++ Parameters
+
+    + id: abc123 (required, string) - The id of the room to change state
+
++ Request 
+
+    + Headers
+
+            Authorization: Basic xxx
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "available": false
+            }
+
+
+### Set Room Name [PUT]
+
+**Only administrators should be able to do this**
+
++ Parameters
+
+    + id: abc123 (required, string) - The id of the room to change name
+
++ Request
+
+    + Headers
+
+            Authorization: Basic xxx
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "name": "Situation Room"
+            }
+
+
+### Create New Room [POST]
+
+**Only adminstrators should be able to do this**
+
++ Request 
+
+    + Headers
+
+        Authorization: Basic xxx
+        Content-Type: application/json
+
+    + Body 
+
+            {
+                "name": "Focus Booth"
+            }
+
+
+## Room Usage [/room/usage{?startDate}{&endDate}{&roomId}]
+
+### Room Usage [GET]
+
+A history of room activity changes
+
++ Parameters
+
+    + startDate: 2017-01-01T10:00:00 (required, string) - The start date as an RFC 3339-encoded timestamp
+    + endDate: 2017-02-01T10:00:00 (required, string) - The end date as an RFC 3339-encoded timestamp
+    + roomId: abc123 (optional, string) - restrict results to a spcific room
+
++ Request
+
+    + Headers
+
+            Authorization: Basic xxx
+
++ Response
+
+            [
+                {
+                    "id": "def45678",
+                    "timeIn": "2017-01-01T10:02:15Z",
+                    "timeOut": "2017-01-01T10:04:29Z",
+                    "user": "Jeff",
+                    "room": {
+                        "id": "abc123",
+                        "name": "Situation Room"
+                    }
+                }       
+            ]

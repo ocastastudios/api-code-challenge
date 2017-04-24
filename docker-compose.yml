@@ -1,0 +1,10 @@
+docs:
+    image: ocasta/api-blueprint-server
+    volumes:
+        - ./spec.apib:/usr/src/app/spec/spec.apib
+    ports:
+        - "9001:9001"
+    environment:
+        - PORT=9001
+        - DISABLE_CACHE=true
+        - DISABLE_AUTH=true
