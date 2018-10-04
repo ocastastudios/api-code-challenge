@@ -8,14 +8,16 @@ We hope that this project will not take too much of your time. If there are thin
 
 ## Background
 
-We are adding a feature to Oplift to see if a meeting room is in use. Any member of staff will be able to view the status of any room at any time through our Oplift apps and web interface. In addition we will allow administrators to add new rooms. An API server will provide the functionality for the web page and app.
+We are building a system to see if a meeting room is in use and to view the history of room usage.
+
+Any member of staff will be able to view the status of any room and to change that status. Only administrators can add new rooms and change their title.
 
 ## API spec
 
 All API calls made require a Basic Authentication header which should be checked against a list of users. You can use a pre-canned list of users and administrators, you do not need to provide any means for administering these.
 
 - All API requests will be made using HTTP or HTTPS
-- All responses will return appropriate HTTP Response codes and a JSON body.
+- All responses will return appropriate HTTP Response codes and JSON bodies.
 
 Each room has:
 
@@ -23,7 +25,12 @@ Each room has:
 - A Name (max 50 characters)
 - A state. Available true or false
 
-You can see the specification of the API below. Note that some requests can only be made by administrators. 
+You can see the specification of the API below. Note that some requests can only be made by administrators.
+
+The spec is made up of two main parts
+
+- Rooms that can be created, requested and have their titles changed.
+- Room usage that is recorded by a simple 'available' / 'unavailable' state change. The history of those state changes can then be queried.
 
 ## Your Task
 
@@ -71,11 +78,11 @@ MongoDB, MySQL or PostgreSQL. We use MongoDB and MySQL in-house.
 
 **What will you be grading me on?**
 
-Elegance, robustness, understanding of the technologies you use, tests, security. 
+Elegance, robustness, understanding of the technologies you use, tests, security.
 
 **Will I have a chance to explain my choices?**
 
-Feel free to comment your code, or put explanations in a pull request within the repo. If we proceed we'll be asking questions about why you made the choices you made. 
+Feel free to comment your code, or put explanations in a pull request within the repo. If we proceed we'll be asking questions about why you made the choices you made.
 
 **Why doesn't the test include X?**
 
@@ -91,7 +98,7 @@ Good question. Feel free to tell us how to make the test better. Or, you know, [
 + Request
 
     + Headers
-        
+
             Authorization: Basic xxx
 
 + Response 200
@@ -117,7 +124,7 @@ Good question. Feel free to tell us how to make the test better. Or, you know, [
     + id: abc123 (required, string) - The id of the room to return
 
 + Request
-    
+
     + Headers
 
             Authorization: Basic xxx
@@ -143,7 +150,7 @@ Good question. Feel free to tell us how to make the test better. Or, you know, [
 
     + id: abc123 (required, string) - The id of the room to change state
 
-+ Request 
++ Request
 
     + Headers
 
@@ -183,14 +190,14 @@ Good question. Feel free to tell us how to make the test better. Or, you know, [
 
 **Only adminstrators should be able to do this**
 
-+ Request 
++ Request
 
     + Headers
 
             Authorization: Basic xxx
             Content-Type: application/json
 
-    + Body 
+    + Body
 
             {
                 "name": "Focus Booth"
@@ -226,5 +233,5 @@ A history of room activity changes
                         "name": "Situation Room"
                     },
                     "available": true
-                }       
+                }
             ]

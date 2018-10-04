@@ -6,9 +6,9 @@ The site is written in [API Blueprint](http://apiblueprint.org/), see the `/spec
 
 # Building & Deploying
 
-To compile the apib file into html:
+To compile the apib file into html (using Docker):
 
-        $ docker run -it --rm -v $PWD:/docs humangeo/aglio html -i spec.apib --theme-variables streak --theme-template triple -o spec.html
+        $ ./compile
 
 The html file is deployed to and served from S3
 

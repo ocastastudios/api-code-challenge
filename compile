@@ -1,0 +1,1 @@
+docker run -it --rm -v /home/jason/Projects/ocasta/ocastacodechallenge:/docs humangeo/aglio html -i spec.apib --theme-variables streak --theme-template triple -o spec.html
